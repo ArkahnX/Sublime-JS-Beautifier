@@ -1,0 +1,6 @@
+[
+    { "caption": "JS Beautifier: Disable", "command": "disable" },
+    { "caption": "JS Beautifier: Enable", "command": "enable" },
+    { "caption": "Preferences: JS Beautifier – Default", "command": "default" },
+    { "caption": "Preferences: JS Beautifier - User", "command": "user" }
+]

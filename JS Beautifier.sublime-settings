@@ -1,0 +1,15 @@
+{
+    "enabled": true,
+    // JS Beautifier options
+    "brace_style": "collapse",
+    "eval_code": false,
+    "indent_char": " ",
+    "indent_size": 4,
+    "indent_with_tabs": false,
+    "jslint_happy": false,
+    "keep_array_indentation": false,
+    "keep_function_indentation": false,
+    "max_preserve_newlines": 10.0,
+    "preserve_newlines": true,
+    "unescape_strings": false
+}

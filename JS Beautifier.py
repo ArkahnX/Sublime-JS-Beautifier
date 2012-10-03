@@ -1,6 +1,8 @@
-from sublime import error_message, load_settings, save_settings,packages_path, Region
+from sublime import error_message, status_message, load_settings, save_settings, packages_path, Region
 import sublime_plugin
-import re, os, sys
+import re
+import os
+import sys
 
 try:
     import jsbeautifier
@@ -19,13 +21,13 @@ class jsbeautifierListener(sublime_plugin.EventListener):
         try:
             settings = load_settings(sublime_settings)
             if js_file(view):
-                if settings.get('enabled',True):
+                if settings.get('enabled', True):
                     if view.file_name():
-                        self.process(view,settings)
+                        self.process(view, settings)
         except Exception, e:
             error_message(str(e))
 
-    def process(self,view,settings):
+    def process(self, view, settings):
         replace_region = None
         pos = None
         sel = view.sel()
@@ -43,19 +45,19 @@ class jsbeautifierListener(sublime_plugin.EventListener):
         content = view.substr(replace_region)
 
         opts = jsbeautifier.default_options()
-        opts.brace_style = settings.get('brace_style',opts.brace_style)
-        opts.eval_code = settings.get('eval_code',opts.eval_code)
-        opts.indent_char = settings.get('indent_char',opts.indent_char)
-        opts.indent_size = settings.get('indent_size',opts.indent_size)
-        opts.indent_with_tabs = settings.get('indent_with_tabs',opts.indent_with_tabs)
-        opts.jslint_happy = settings.get('jslint_happy',opts.jslint_happy)
-        opts.keep_array_indentation = settings.get('keep_array_indentation',opts.keep_array_indentation)
-        opts.keep_function_indentation = settings.get('keep_function_indentation',opts.keep_function_indentation)
-        opts.max_preserve_newlines = settings.get('max_preserve_newlines',opts.max_preserve_newlines)
-        opts.preserve_newlines = settings.get('preserve_newlines',opts.preserve_newlines)
-        opts.unescape_strings = settings.get('unescape_strings',opts.unescape_strings)
+        opts.brace_style = settings.get('brace_style', opts.brace_style)
+        opts.eval_code = settings.get('eval_code', opts.eval_code)
+        opts.indent_char = settings.get('indent_char', opts.indent_char)
+        opts.indent_size = settings.get('indent_size', opts.indent_size)
+        opts.indent_with_tabs = settings.get('indent_with_tabs', opts.indent_with_tabs)
+        opts.jslint_happy = settings.get('jslint_happy', opts.jslint_happy)
+        opts.keep_array_indentation = settings.get('keep_array_indentation', opts.keep_array_indentation)
+        opts.keep_function_indentation = settings.get('keep_function_indentation', opts.keep_function_indentation)
+        opts.max_preserve_newlines = settings.get('max_preserve_newlines', opts.max_preserve_newlines)
+        opts.preserve_newlines = settings.get('preserve_newlines', opts.preserve_newlines)
+        opts.unescape_strings = settings.get('unescape_strings', opts.unescape_strings)
 
-        fixed = jsbeautifier.beautify(content,opts)
+        fixed = jsbeautifier.beautify(content, opts)
         if fixed != content:
             edit = view.begin_edit()
             view.replace(edit, replace_region, fixed)
@@ -74,16 +76,18 @@ class jsbeautifierCommand(sublime_plugin.WindowCommand):
 class DisableCommand(jsbeautifierCommand):
     def run(self):
         try:
-            load_settings(self.settings).set('enabled',False)
+            load_settings(self.settings).set('enabled', False)
             save_settings(self.settings)
+            status_message("JS Beautifier Disabled")
         except Exception, e:
             error_message(str(e))
 
 class EnableCommand(jsbeautifierCommand):
     def run(self):
         try:
-            load_settings(self.settings).set('enabled',True)
+            load_settings(self.settings).set('enabled', True)
             save_settings(self.settings)
+            status_message("JS Beautifier Enabled")
         except Exception, e:
             error_message(str(e))
 
@@ -97,7 +101,7 @@ def package_path():
 class DefaultCommand(jsbeautifierCommand):
     def run(self):
         try:
-            default = "%s/%s" % (package_path(),self.settings)
+            default = "%s/%s" % (package_path(), self.settings)
             self.window.open_file(default)
         except Exception, e:
             error_message(str(e))
@@ -105,7 +109,7 @@ class DefaultCommand(jsbeautifierCommand):
 class UserCommand(jsbeautifierCommand):
     def run(self):
         try:
-            user = "%s/Users/%s" % (packages_path(),self.settings)
+            user = "%s/Users/%s" % (packages_path(), self.settings)
             self.window.open_file(user)
         except Exception, e:
             error_message(str(e))

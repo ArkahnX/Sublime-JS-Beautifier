@@ -45,7 +45,7 @@ class jsbeautifierListener(sublime_plugin.EventListener):
         content = view.substr(replace_region)
 
         opts = jsbeautifier.default_options()
-        s = load_settings(settings.file)
+        s = load_settings(settings.filename)
         opts.brace_style = s.get('brace_style', opts.brace_style)
         opts.eval_code = s.get('eval_code', opts.eval_code)
         opts.indent_char = s.get('indent_char', opts.indent_char)

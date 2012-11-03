@@ -2,11 +2,14 @@ from sublime import error_message, load_settings, Region
 import sublime_plugin
 import re
 import settings
+from platform import python_version_tuple
+v = python_version_tuple()
+pip="pip-%s.%s" % (v[0], v[1])
 
 try:
     import jsbeautifier
 except:
-    error_message('Cannot import jsbeautifier!')
+    error_message('jsbeautifier ImportError, run \nsudo %s install jsbeautifier' % pip)
     raise
 
 def JavaScript(view):
